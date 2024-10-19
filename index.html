@@ -5,26 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dnd Character Creator</title>
   <link rel="stylesheet" href="css/styles.css">
+  <!-- Google Fonts, tu si môžeš pridať vlastný DnD font -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-<header>
-  <h1>Vytvor si vlastnú DnD postavu</h1>
+<header class="site-header">
+  <div class="header-content">
+    <!-- Logo na ľavej strane -->
+    <a href="index.html">
+      <img src="/images/Logo2.png" alt="Logo" class="logo">
+    </a>
+
+    <!-- Text v strede -->
+    <h1 class="site-title">Character Builder</h1>
+
+    <!-- Login na pravej strane -->
+    <a href="index.html" class="login-link">Login</a>
+  </div>
 </header>
 
-<nav>
-  <ul>
-    <li><a href="index.html">Domov</a></li>
-    <li><a href="race.html">Výber rasy</a></li>
-    <li><a href="class.html">Výber povolania</a></li>
-  </ul>
-</nav>
-
-<main class="container">
-  <!-- Obsah stránky -->
+<main class="content">
+  <section class="intro">
+    <p>Vitaj v tvorbe DnD postáv! Na tejto stránke si môžeš zostaviť svoju vlastnú postavu pre Dungeons & Dragons. Prejdi krokmi výberu rasy, povolania a pozadia a vytvor si unikátnu postavu, pripravenú na hru!</p>
+    <a href="race.html" class="btn-start">Začať tvorbu</a>
+  </section>
 </main>
 
-<footer>
-  <p>&copy; Dnd Character Creator</p>
+<footer class="footer">
+  <p>&copy; 2024 Tvorca DnD postáv</p>
 </footer>
 </body>
 </html>

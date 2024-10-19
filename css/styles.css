@@ -1,0 +1,144 @@
+/* Základné nastavenia */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2d2d2d; /* tmavé pozadie */
+    color: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Header */
+.site-header {
+    background-image: url('/images/bg1.jpg');
+    background-size: cover; /* Obrázok sa automaticky prispôsobí veľkosti headeru */
+    background-position: center;
+    background-repeat: no-repeat; /* Zabezpečí, že obrázok sa neopakuje */
+    padding: 30px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Flexbox pre horizontálne usporiadanie */
+.header-content {
+    display: flex;
+    /*justify-content: space-between; !* Priestor medzi prvkami *!*/
+    align-items: center; /* Zarovná prvky vertikálne do stredu */
+    max-width: 1200px;
+}
+
+/* Logo */
+.logo {
+    height: 80px; /* Nastaví výšku loga */
+    width: auto; /* Zachová pomer strán loga */
+    margin-right: 20px;
+}
+
+/* Nadpis */
+.site-title {
+    font-family: 'Cinzel', serif; /* DnD fantasy font */
+    color: #ff4500;
+    font-size: 2.5em;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    margin: 0; /* Odstrániť okraje okolo nadpisu */
+}
+
+/* Login odkaz */
+.login-link {
+    font-family: 'Cinzel', serif; /* Zhodný font */
+    color: #ff4500;
+    font-size: 1.2em;
+    text-decoration: underline; /* Odstrániť podčiarknutie */
+    position: absolute; /* Absolútna pozícia */
+    right: 50px; /* Umiestnenie 20px od pravého okraja */
+    top: 50%; /* Vertikálne centrovanie */
+    transform: translateY(-50%); /* Úprava pozície na vertikálne centrovanie */
+    transition: color 0.3s ease; /* Animácia zmeny farby */
+}
+
+.login-link:hover {
+    color: #fff; /* Zmení farbu pri hover */
+}
+
+/* Hlavný obsah */
+.content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.intro p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    max-width: 600px;
+    color: #dcdcdc;
+}
+
+/* Tlačidlo */
+.btn-start {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #ff4500;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 5px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-start:hover {
+    background-color: #ff6347;
+    transform: scale(1.05);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #1a1a1a;
+    color: #888;
+}
+
+/* Responzívny dizajn */
+@media (max-width: 768px) {
+    .site-title {
+        font-size: 2.5em;
+    }
+
+    .intro p {
+        font-size: 1em;
+    }
+
+    .btn-start {
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .site-title {
+        font-size: 1.8em;
+    }
+
+    .login-link {
+        font-size: 1em;
+    }
+
+    .logo {
+        height: 60px;
+    }
+}
