@@ -1,0 +1,149 @@
+/* Základné nastavenia */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #1a1a1a, #4d4d4d); /* Gradient pozadie */
+    color: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Header */
+.site-header {
+    background-image: url('/images/bg1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 30px;
+    position: relative;
+    z-index: 1;
+}
+
+.header-content {
+    display: flex;
+    align-items: center; /* Zarovná prvky vertikálne do stredu */
+    max-width: 1200px;
+}
+
+.logo {
+    height: 80px;
+    width: auto;
+    margin-right: 20px;
+}
+
+/* Nadpis */
+.site-title {
+    font-family: 'Cinzel', serif; /* DnD fantasy font */
+    color: #ff4500;
+    font-size: 2.5em;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    margin: 0; /* Odstrániť okraje okolo nadpisu */
+}
+
+/* Login box */
+.login-box {
+    background-color: rgba(0, 0, 0, 0.8); /* Polopriehľadné tmavé pozadie */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 100%;
+    margin: -50px auto 20px;
+    text-align: center;
+}
+
+.login-box h2 {
+    font-family: 'Cinzel', serif; /* DnD fantasy font */
+    color: #ff4500;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 1.2em;
+    color: #f0f0f0;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.input-group input:focus {
+    outline: none;
+    box-shadow: 0 0 10px #ff4500; /* Efekt pri zaostrení */
+}
+
+/* Tlačidlo */
+.btn-submit {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #ff4500;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 5px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s, transform 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #ff6347;
+    transform: scale(1.05);
+}
+
+.register-link {
+    margin-top: 15px;
+    font-size: 1em;
+    color: #f0f0f0;
+}
+
+.register-link a {
+    color: #ff4500;
+    text-decoration: underline;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #1a1a1a;
+    color: #888;
+}
+
+/* Responzívny dizajn */
+@media (max-width: 768px) {
+    .login-box {
+        padding: 30px;
+        margin: 20px auto;
+    }
+
+    .login-box h2 {
+        font-size: 1.5em;
+    }
+}
