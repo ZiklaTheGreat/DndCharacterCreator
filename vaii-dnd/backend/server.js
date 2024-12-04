@@ -1,33 +1,24 @@
-const express = require("express")
-const mongoose = require("mongoose")
-const path = require("path")
-const port = 3100
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
-app.use(express.static(__dirname))
-app.use(express.urlencoded({extended:true}))
 
-mongoose.connect('mongodb://127.0.0.1:27017/users')
-const db = mongoose.connection
-db.once('open',()=>{
-    console.log("Mongodb connection successful")
-})
+// Middleware pre spracovanie JSON dát
+app.use(express.json());
 
-const userSchema = new mongoose.Schema({
-    name: String,
-    password: String
-})
+// Nastavenie CORS
+app.use(cors());
 
-const Users = mongoose.model("data",userSchema)
 
-app.get('/',(req, res)=>{
-    res.sendFile(path.join(__dirname, '../src/pages/RegisterPage.js'))
-})
+// Routes
+app.use('/api/users', require('./routes/users'));
 
-app.post('/post',async(req,res)=>{
+// Pripojenie k MongoDB
+mongoose.connect('mongodb://localhost:27017/vail-dnd')
+  .then(() => console.log('Pripojenie k MongoDB úspešné'))
+  .catch(err => console.log('Chyba pri pripojení k MongoDB:', err));
 
-})
-
-app.listen(port, ()=>{
-    console.log("Server started")
-})
+// Spustenie servera
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server beží na porte ${PORT}`));

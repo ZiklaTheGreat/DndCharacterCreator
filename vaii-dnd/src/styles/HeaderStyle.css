@@ -16,6 +16,9 @@ header {
     display: flex;
     align-items: center;
     max-width: 1200px;
+    flex-wrap: wrap;
+    width: 100%; /* Dynamická šírka */
+    box-sizing: border-box;
 }
 
 /* Logo */
@@ -76,5 +79,35 @@ header {
 }
 
 .login-link:hover {
+    color: #fff;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-left: 100px; /* Posunie user-info doprava */
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    flex-shrink: 0;
+}
+
+.welcome-message {
+    font-family: 'Cinzel', serif;
+    color: #ff4500;
+    font-size: 1.2em;
+    margin-right: 15px;
+}
+
+.logout-link {
+    font-family: 'Cinzel', serif;
+    color: #ff4500;
+    font-size: 1.2em;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.logout-link:hover {
     color: #fff;
 }

@@ -1,0 +1,82 @@
+.manage-users-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #1a1a1a; /* Tmavé pozadie */
+    min-height: 100vh;
+    color: #f0f0f0;
+    font-family: 'Cinzel', serif;
+}
+
+.manage-users-title {
+    font-size: 2.5em;
+    color: #ff4500;
+    text-decoration: underline;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.users-table {
+    width: 100%;
+    max-width: 800px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    background-color: #222;
+    justify-content: space-between;
+}
+
+.users-table th, .users-table td {
+    border: 1px solid #444;
+    padding: 10px;
+    text-align: center;
+    color: #ddd;
+}
+
+.users-table th {
+    background-color: #333;
+    color: #ff4500;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.users-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.users-table td {
+    font-size: 1em;
+}
+
+.users-table td:first-child {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.action-button {
+    padding: 8px 15px;
+    background-color: #ff4500;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 5px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: background-color 0.3s, transform 0.3s;
+    border: none;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.action-button:hover {
+    background-color: #ff6347;
+    transform: scale(1.05);
+}
+
+.empty-message {
+    font-size: 1.2em;
+    color: #dcdcdc;
+    text-align: center;
+    margin-top: 20px;
+}
