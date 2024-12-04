@@ -1,0 +1,22 @@
+/* footer {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    position: fixed;
+    bottom: 0;
+    background-color: #1a1a1a;
+    color: #888;
+    width: 100%;
+    text-align: center;
+} */
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    background-color: #1a1a1a;
+    color: #888;
+    width: 100%;
+    text-align: center;
+    margin-top: auto;
+}

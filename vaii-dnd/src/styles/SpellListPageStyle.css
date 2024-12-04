@@ -1,0 +1,42 @@
+.spell-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.spell-table th, .spell-table td {
+    border: 1px solid #444;
+    padding: 10px;
+    text-align: left;
+    color: #ddd;
+    font-family: 'Cinzel', serif;
+}
+
+.spell-table th {
+    background-color: #222;
+    color: #ff4500;
+    font-weight: bold;
+}
+
+.spell-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spell-table a {
+    color: #ff4500;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.spell-table a:hover {
+    color: #fff;
+}
+
+.spell-table td {
+    font-size: 1em;
+}
+
+.spell-table td:first-child {
+    font-weight: bold;
+    font-size: 1.1em;
+}

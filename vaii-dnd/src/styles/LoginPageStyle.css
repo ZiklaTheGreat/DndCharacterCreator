@@ -1,0 +1,78 @@
+.login-box {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 100%;
+    margin: 50px auto 20px;
+    text-align: center;
+}
+
+.login-box h2 {
+    font-family: 'Cinzel', serif;
+    color: #ff4500;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 1.2em;
+    color: #f0f0f0;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.input-group input:focus {
+    outline: none;
+    box-shadow: 0 0 10px #ff4500;
+}
+
+
+.btn-submit {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #ff4500;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 5px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s, transform 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #ff6347;
+    transform: scale(1.05);
+}
+
+.register-link {
+    margin-top: 15px;
+    font-size: 1em;
+    color: #f0f0f0;
+}
+
+.register-link a {
+    color: #ff4500;
+    text-decoration: underline;
+}
