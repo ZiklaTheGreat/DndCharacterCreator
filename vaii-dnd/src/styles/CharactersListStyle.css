@@ -1,0 +1,72 @@
+.characters-list-page {
+  font-family: 'Cinzel', serif;
+  color: #ff4500;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+
+.page-title {
+  font-size: 3em;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+.create-character-link {
+  background-color: #ff4500;
+  color: #000;
+  font-size: 1.5em;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-family: 'Cinzel', serif;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.create-character-link:hover {
+  background-color: #e63900;
+}
+
+.character-list {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  max-width: 800px;
+}
+
+.character-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 2px solid #ff4500;
+  border-radius: 10px;
+  background-color: #000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.character-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.9);
+}
+
+.character-link {
+  font-size: 1.8em;
+  color: #ff4500;
+  text-decoration: none;
+  margin-bottom: 5px;
+  transition: color 0.3s ease;
+}
+
+.character-link:hover {
+  color: #fff;
+}
+
+.character-details {
+  font-size: 1.2em;
+  color: #ccc;
+}

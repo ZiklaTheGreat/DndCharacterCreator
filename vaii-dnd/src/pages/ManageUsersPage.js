@@ -76,7 +76,7 @@ function ManageUsersPage({ username }) {
           <thead>
             <tr>
               <th>Username</th>
-              <th>Actions</th> {/* Zmenili sme na množné číslo, keďže máme viac akcií */}
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>

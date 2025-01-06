@@ -17,8 +17,15 @@ const Header = ({ isAuthenticated, handleLogout, username }) => {
             {username === 'admin' && (
               <li><a href="/ManageUsers">Manage Users</a></li>
             )}
+            {isAuthenticated && username !== 'admin' && (
+              <li><a href="/create-character">Create Character</a></li>
+            )}
+            {isAuthenticated && username !== 'admin' && (
+              <li><a href="/my-characters">My Characters</a></li>
+            )}
           </ul>
         </nav>
+
         {isAuthenticated ? (
           <div className="user-info">
             <span className="welcome-message">User: {username}!</span>

@@ -1,0 +1,166 @@
+.create-character-page {
+  background: none; /* Použije sa gradient zo základného nastavenia */
+  color: #ff4500;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+}
+
+.page-title {
+  font-family: 'Cinzel', serif;
+  font-size: 3em;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+.steps-navigation {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.step-button {
+  background-color: #1a1a1a;
+  color: #ff4500;
+  border: 1px solid #ff4500;
+  padding: 15px 25px;
+  margin: 0 10px;
+  font-size: 1.5em;
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.step-button.active,
+.step-button:hover {
+  background-color: #ff4500;
+  color: #000;
+}
+
+.form-container {
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  padding: 40px; /* Odsadenie vnútri čierneho boxu */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+  width: 90%; /* Šírka boxu */
+  max-width: 600px; /* Maximálna šírka */
+  margin: 0 auto; /* Centrovanie na stránke */
+  margin-bottom: 80px;
+}
+
+.character-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Horizontálne centrovanie */
+  justify-content: center; /* Vertikálne centrovanie */
+  text-align: center;
+  min-height: 400px; /* Nastavíme minimálnu výšku */
+}
+
+.form-section h3 {
+  font-size: 2em; /* Väčší text pre zvyšné body */
+  margin-bottom: 30px;
+  color: #ff4500;
+}
+
+.attribute-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrovanie tlačidiel a čísla */
+  gap: 20px; /* Medzi tlačidlami a číslom */
+  margin-bottom: 25px; /* Odsadenie medzi jednotlivými atribútmi */
+}
+
+.attribute-controls span {
+  font-size: 1.8em; /* Zvýšenie veľkosti čísla */
+  font-weight: bold;
+  color: #fff;
+}
+
+
+.attribute-controls button {
+  background-color: #1a1a1a;
+  color: #ff4500;
+  font-size: 1.2em;
+  border: 1px solid #ff4500;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.attribute-controls button:hover {
+  background-color: #ff4500;
+  color: #000;
+}
+
+.attribute-controls span {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #fff;
+}
+
+
+.form-section label {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.form-section input,
+.form-section select,
+.form-section textarea {
+  width: 100%; /* Vstupy budú mať celú šírku form-section */
+  padding: 15px; /* Odsadenie vo vnútri vstupov */
+  font-size: 1.2em; /* Veľkosť textu */
+  border: 2px solid #ff4500;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+  margin-top: 5px; /* Odsadenie nad vstupom */
+  box-sizing: border-box;
+}
+
+.form-section input:focus,
+.form-section select:focus,
+.form-section textarea:focus {
+  border-color: #e63900;
+  outline: none;
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.navigation-buttons button:last-child {
+  margin-left: auto; /* Posunie tlačidlo Next napravo */
+}
+
+.navigation-buttons button {
+  background-color: #ff4500;
+  color: #000;
+  font-size: 1.5em;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 30px;
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  transition: background-color 0.3s ease;
+}
+
+.navigation-buttons button:hover {
+  background-color: #e63900;
+}
+
+.submit-button {
+  width: 50%;
+}

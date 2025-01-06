@@ -13,6 +13,9 @@ app.use(cors());
 
 // Routes
 app.use('/api/users', require('./routes/users'));
+const charactersRouter = require('./routes/characters');
+app.use('/api/characters', charactersRouter);
+
 
 // Pripojenie k MongoDB
 mongoose.connect('mongodb://localhost:27017/vail-dnd')

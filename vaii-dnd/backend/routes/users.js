@@ -7,6 +7,7 @@ const User = require('../models/User');
 
 // Registrácia užívateľa
 router.post('/register', async (req, res) => {
+  console.log("Reached POST / in users.js");
   const { username, password } = req.body;
 
   // Overenie vstupov
@@ -74,7 +75,6 @@ router.post('/login', async (req, res) => {
 // Načítanie všetkých užívateľov (len pre admina)
 router.get('/', async (req, res) => {
     try {
-      // Pre jednoduchý projekt neimplementujeme autentifikáciu na backende
       const users = await User.find().select('-password'); // Vylúčime heslá
       res.json(users);
     } catch (err) {

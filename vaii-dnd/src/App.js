@@ -8,6 +8,9 @@ import LoginPage from './pages/LoginPage';
 import SpellListPage from './pages/SpellListPage';
 import RegisterPage from './pages/RegisterPage';
 import ManageUsersPage from './pages/ManageUsersPage';
+import CreateCharacterPage from './pages/CreateCharacterPage';
+import CharactersListPage from './pages/CharactersListPage';
+import CharacterDetailPage from './pages/CharacterDetailPage';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -57,16 +60,9 @@ function App() {
             <Route path="/Register" element={<RegisterPage />} />
             <Route path="/SpellList" element={<SpellListPage />} />
             <Route path="/ManageUsers" element={<ManageUsersPage username={username} />} />
-            {/* <Route
-              path="/ManageUsers"
-              element={
-                username === "admin" ? (
-                  <ManageUsersPage />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            /> */}
+            <Route path="/create-character" element={<CreateCharacterPage />} />
+            <Route path="/my-characters" element={<CharactersListPage />} />
+            <Route path="/characters/:id" element={<CharacterDetailPage />} />
           </Routes>
         </main>
         <Footer />
