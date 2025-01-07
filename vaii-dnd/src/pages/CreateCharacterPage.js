@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "../styles/CreateCharacterPageStyle.css";
 
 function CreateCharacterPage() {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     picture: '',
@@ -21,7 +23,14 @@ function CreateCharacterPage() {
     },
     inventory: '',
   });
-  
+
+  useEffect(() => {
+    const username = localStorage.getItem('username');
+    if (!username) {
+      //alert('You must be logged in to access this page.');
+      navigate('/Login'); // Presmerovanie na login
+    }
+  }, [navigate]);  
 
   const steps = ['Name & Picture', 'Race', 'Class', 'Attributes', 'Inventory'];
 
@@ -90,6 +99,18 @@ function CreateCharacterPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    const ownerName = localStorage.getItem('username');
+    const body = { ownerName, ...formData };
+
+    if (!ownerName || ownerName.trim() === '') {
+      alert('You must be logged in to create a!');
+      return;
+    }
+    if (!body.name || body.name.trim() === '') {
+      alert('You must enter a character name!');
+      return;
+    }
     if (remainingPoints > 0) {
       alert('You must use all attribute points before creating your character!');
       return;

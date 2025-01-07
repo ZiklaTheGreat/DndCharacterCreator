@@ -23,18 +23,50 @@ function App() {
       setIsAuthenticated(true);
       setUsername(user);
     }
+
+    const updateLastActivity = () => {
+      localStorage.setItem('lastActivity', Date.now().toString());
+    };
+
+    const logoutAfterInactivity = () => {
+      const lastActivity = localStorage.getItem('lastActivity');
+      const currentTime = Date.now();
+
+      if (lastActivity && currentTime - parseInt(lastActivity, 10) > 3600000) {
+        // 1 hodina = 3600000 ms
+        handleLogout();
+        window.location.reload();
+      }
+    };
+
+    // Aktualizuj čas poslednej aktivity pri interakcii používateľa
+    window.addEventListener('mousemove', updateLastActivity);
+    window.addEventListener('keydown', updateLastActivity);
+    window.addEventListener('click', updateLastActivity);
+
+    // Kontrola neaktivity každých 5 minút
+    const interval = setInterval(logoutAfterInactivity, 300000);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('mousemove', updateLastActivity);
+      window.removeEventListener('keydown', updateLastActivity);
+      window.removeEventListener('click', updateLastActivity);
+    };
   }, []);
 
   // Funkcia na prihlásenie užívateľa
   const handleLogin = () => {
     setIsAuthenticated(true);
     setUsername(localStorage.getItem('username'));
+    localStorage.setItem('lastActivity', Date.now().toString());
   };
 
   // Funkcia na odhlásenie užívateľa
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('username');
+    localStorage.removeItem('lastActivity');
     setIsAuthenticated(false);
     setUsername('');
   };

@@ -41,7 +41,7 @@ function CharacterDetailPage() {
   const calculateOnHit = () => {
     const weapon = weapons[charData?.weapon || 'none'];
     const governingAttr = charData?.attributes[weapon.attribute] || 0;
-    return charData?.level + governingAttr;
+    return Math.max(0, charData?.level + Math.floor(governingAttr / 2) - 6);
   };
 
   useEffect(() => {
@@ -78,6 +78,26 @@ function CharacterDetailPage() {
     }
   };
 
+  const calculateHP = (level, charClass) => {
+    const classHitDice = {
+      wizard: 4,
+      rogue: 6,
+      fighter: 8,
+    };
+    return level * (classHitDice[charClass] || 0);
+  };
+
+  const calculateProficiency = (level) => Math.max(1, Math.floor(level / 2));
+
+  if (!charData) {
+    return <div>Loading character...</div>;
+  }
+
+  const { level, charClass } = charData;
+  const hp = calculateHP(level, charClass);
+  const proficiency = calculateProficiency(level);
+  const ac = calculateAC(10, 0, 0);
+
   if (!charData) {
     return <div>Loading character...</div>;
   }
@@ -85,7 +105,7 @@ function CharacterDetailPage() {
   return (
     <div className="character-detail-page">
       <div className="character-sheet">
-        <div className="character-header">
+      <div className="character-header">
           <img
             src={charData.picture || '/images/question.png'}
             alt="Character"
@@ -93,11 +113,17 @@ function CharacterDetailPage() {
           />
           <div className="character-overview">
             <h2 className="character-name">{charData.name}</h2>
-            <div className="character-details">
-              <p>Level: {charData.level}</p>
-              <p>Race: {charData.race}</p>
-              <p>Class: {charData.charClass}</p>
-              <p>Armor Class (AC): {calculateAC()}</p>
+            <div className="header-content">
+              <div className="character-details">
+                <p>Level: {level}</p>
+                <p>Race: {charData.race}</p>
+                <p>Class: {charClass}</p>
+              </div>
+              <div className="character-stats">
+                <p>AC: {ac}</p>
+                <p>HP: {hp}</p>
+                <p>Proficiency: {proficiency}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -108,13 +134,7 @@ function CharacterDetailPage() {
             <div key={key} className="attribute">
               <div className="attribute-header">
                 <span>{key.charAt(0).toUpperCase() + key.slice(1)}:</span>
-                <input
-                  type="number"
-                  name={`attributes.${key}`}
-                  value={value}
-                  onChange={onChange}
-                  className="attribute-input"
-                />
+                <span className="attribute-value">{value}</span> {/* Non-editable value */}
               </div>
               <div className="skills">
                 {skillsMapping[key]?.map((skill) => (
@@ -127,34 +147,37 @@ function CharacterDetailPage() {
           ))}
         </div>
 
-        <div className="character-equipment">
-          <h3>Equipment</h3>
-          <label>Armor:</label>
-          <select name="armor" value={charData.armor} onChange={onChange}>
-            <option value="none">None</option>
-            <option value="light">Light</option>
-            <option value="medium">Medium</option>
-            <option value="heavy">Heavy</option>
-          </select>
-          <label>Weapon:</label>
-          <select name="weapon" value={charData.weapon} onChange={onChange}>
-            <option value="none">None</option>
-            <option value="greatsword">Greatsword</option>
-            <option value="sword and shield">Sword and Shield</option>
-            <option value="dagger">Dagger</option>
-          </select>
-          <p>On-hit: {calculateOnHit()}</p>
-          <p>Damage: {weapons[charData.weapon]?.damage}</p>
-        </div>
 
-        <div className="character-inventory">
-          <h3>Inventory</h3>
-          <textarea
-            name="inventory"
-            value={charData.inventory}
-            onChange={onChange}
-            className="inventory-input"
-          />
+        <div className="character-gear">
+          <div className="character-equipment">
+            <h3>Equipment</h3>
+            <label>Armor:</label>
+            <select name="armor" value={charData.armor} onChange={onChange}>
+              <option value="none">None</option>
+              <option value="light">Light</option>
+              <option value="medium">Medium</option>
+              <option value="heavy">Heavy</option>
+            </select>
+            <label>Weapon:</label>
+            <select name="weapon" value={charData.weapon} onChange={onChange}>
+              <option value="none">None</option>
+              <option value="greatsword">Greatsword</option>
+              <option value="sword and shield">Sword and Shield</option>
+              <option value="dagger">Dagger</option>
+            </select>
+            <p>On-hit: {calculateOnHit()}</p>
+            <p>Damage: {weapons[charData.weapon]?.damage}</p>
+          </div>
+
+          <div className="character-inventory">
+            <h3>Inventory</h3>
+            <textarea
+              name="inventory"
+              value={charData.inventory}
+              onChange={onChange}
+              className="inventory-input"
+            />
+          </div>
         </div>
       </div>
       <button className="save-button" onClick={onSave}>
