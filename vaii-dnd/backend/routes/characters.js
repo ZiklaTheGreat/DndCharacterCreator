@@ -5,6 +5,46 @@ console.log("characters.js loaded");
 const express = require('express');
 const router = express.Router();
 const Character = require('../models/Character');
+const multer = require('multer');
+const path = require('path');
+
+// Nastavenie úložiska pre Multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Zložka, kam sa ukladajú súbory
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Vygenerované meno súboru
+  },
+});
+
+// Filter pre povolené typy súborov
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Nepovolený typ súboru'), false);
+  }
+};
+
+// Middleware Multer
+const upload = multer({ storage, fileFilter });
+
+// Endpoint pre nahrávanie obrázkov
+router.post('/upload-image', upload.single('image'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ msg: 'Súbor nebol nahraný' });
+    }
+    const imageUrl = `/uploads/${req.file.filename}`;
+    res.json({ msg: 'Obrázok bol úspešne nahraný', imageUrl });
+  } catch (err) {
+    console.error('Chyba pri nahrávaní obrázka:', err);
+    res.status(500).json({ msg: 'Serverová chyba' });
+  }
+});
+
 
 // CREATE (POST) - Vytvorenie novej postavy
 router.post('/', async (req, res) => {

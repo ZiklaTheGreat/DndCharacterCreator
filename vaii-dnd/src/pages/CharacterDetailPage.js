@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Added `useNavigate`
 import '../styles/CharacterDetailStyle.css';
 
 function CharacterDetailPage() {
   const { id } = useParams();
   const [charData, setCharData] = useState(null);
   const username = localStorage.getItem('username');
+  const navigate = useNavigate(); // Added navigation
 
   const armorClassValues = {
     none: 10,
@@ -44,6 +45,18 @@ function CharacterDetailPage() {
     return Math.max(0, charData?.level + Math.floor(governingAttr / 2) - 6);
   };
 
+  const calculateHP = (level, charClass, constitution) => {
+    const classHitDice = {
+      wizard: 4,
+      rogue: 6,
+      fighter: 8,
+    };
+    const constitutionBonus = Math.floor(constitution / 2) - 5;
+    return level * (classHitDice[charClass] || 0) + level * constitutionBonus;
+  };
+
+  const calculateProficiency = (level) => Math.max(1, Math.floor(level / 2));
+
   useEffect(() => {
     const fetchChar = async () => {
       try {
@@ -78,36 +91,31 @@ function CharacterDetailPage() {
     }
   };
 
-  const calculateHP = (level, charClass) => {
-    const classHitDice = {
-      wizard: 4,
-      rogue: 6,
-      fighter: 8,
-    };
-    return level * (classHitDice[charClass] || 0);
+  const handleLevelUp = () => {
+    navigate(`/characters/${id}/level-up`);
   };
-
-  const calculateProficiency = (level) => Math.max(1, Math.floor(level / 2));
 
   if (!charData) {
     return <div>Loading character...</div>;
   }
 
   const { level, charClass } = charData;
-  const hp = calculateHP(level, charClass);
+  const hp = calculateHP(level, charClass, charData.attributes.constitution);
   const proficiency = calculateProficiency(level);
   const ac = calculateAC(10, 0, 0);
-
-  if (!charData) {
-    return <div>Loading character...</div>;
-  }
 
   return (
     <div className="character-detail-page">
       <div className="character-sheet">
-      <div className="character-header">
+        <div className="character-header">
           <img
-            src={charData.picture || '/images/question.png'}
+            src={
+              charData.picture
+                ? charData.picture.startsWith('http')
+                  ? charData.picture
+                  : `http://localhost:5000${charData.picture}`
+                : '/images/question.png'
+            }
             alt="Character"
             className="character-image"
           />
@@ -128,13 +136,14 @@ function CharacterDetailPage() {
           </div>
         </div>
 
+        {/* Attributes */}
         <div className="character-attributes">
           <h3 className="attributes-title">Attributes & Skills</h3>
           {Object.entries(charData.attributes).map(([key, value]) => (
             <div key={key} className="attribute">
               <div className="attribute-header">
                 <span>{key.charAt(0).toUpperCase() + key.slice(1)}:</span>
-                <span className="attribute-value">{value}</span> {/* Non-editable value */}
+                <span className="attribute-value">{value}</span>
               </div>
               <div className="skills">
                 {skillsMapping[key]?.map((skill) => (
@@ -147,7 +156,7 @@ function CharacterDetailPage() {
           ))}
         </div>
 
-
+        {/* Equipment */}
         <div className="character-gear">
           <div className="character-equipment">
             <h3>Equipment</h3>
@@ -169,6 +178,7 @@ function CharacterDetailPage() {
             <p>Damage: {weapons[charData.weapon]?.damage}</p>
           </div>
 
+          {/* Inventory */}
           <div className="character-inventory">
             <h3>Inventory</h3>
             <textarea
@@ -180,9 +190,15 @@ function CharacterDetailPage() {
           </div>
         </div>
       </div>
-      <button className="save-button" onClick={onSave}>
-        Save Changes
-      </button>
+
+      <div className="action-buttons">
+        <button className="level-up-button" onClick={() => navigate(`/characters/${id}/level-up`)}>
+          Level Up
+        </button>
+        <button className="save-button" onClick={onSave}>
+          Save Changes
+        </button>
+      </div>
     </div>
   );
 }

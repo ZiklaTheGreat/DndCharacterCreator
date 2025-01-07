@@ -4,6 +4,8 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+const fs = require('fs');
+const path = require('path');
 const Character = require('../models/Character');
 
 // Registrácia užívateľa
@@ -86,32 +88,39 @@ router.get('/', async (req, res) => {
     }
   });
   
-// Vymazanie užívateľa (len pre admina)
+// Vymazanie užívateľa (vrátane jeho postáv a obrázkov)
 router.delete('/:id', async (req, res) => {
-  console.log("Zaciatok");
   try {
     const userId = req.params.id;
-    console.log("2");
 
-    // Získanie užívateľa podľa ID
+    // Nájdeme používateľa podľa ID
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ msg: 'Užívateľ neexistuje' });
+      return res.status(404).json({ msg: 'Používateľ neexistuje' });
     }
 
-    console.log("3");
-
-    // Vymazanie všetkých postáv patriacich užívateľovi
+    // Vymažeme všetky postavy tohto používateľa
+    const characters = await Character.find({ ownerName: user.username });
     await Character.deleteMany({ ownerName: user.username });
 
-    console.log("4");
+    // Vymažeme obrázky spojené s postavami
+    characters.forEach(character => {
+      if (character.picture && !character.picture.startsWith('http')) {
+        const imagePath = path.join(__dirname, '..', character.picture);
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            console.error(`Chyba pri mazaní obrázka: ${imagePath}`, err);
+          }
+        });
+      }
+    });
 
-    // Vymazanie užívateľa
+    // Vymažeme používateľa
     await User.findByIdAndDelete(userId);
 
-    res.json({ msg: 'Užívateľ a všetky jeho postavy boli úspešne vymazané' });
+    res.json({ msg: 'Používateľ a všetky jeho postavy boli úspešne vymazané' });
   } catch (err) {
-    console.error('Chyba pri mazaní užívateľa:', err);
+    console.error('Chyba pri mazaní používateľa:', err);
     res.status(500).json({ msg: 'Serverová chyba' });
   }
 });

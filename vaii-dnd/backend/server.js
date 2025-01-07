@@ -10,10 +10,13 @@ app.use(express.json());
 // Nastavenie CORS
 app.use(cors());
 
+app.use('/uploads', express.static('uploads'));
+
 // Routes
 app.use('/api/users', require('./routes/users'));
 const charactersRouter = require('./routes/characters');
 app.use('/api/characters', charactersRouter);
+
 
 
 // Pripojenie k MongoDB

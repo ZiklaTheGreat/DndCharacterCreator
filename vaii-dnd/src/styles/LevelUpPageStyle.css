@@ -1,0 +1,54 @@
+.level-up-page {
+    font-family: 'Cinzel', serif;
+    color: #ff4500;
+    padding: 40px;
+    text-align: center;
+  }
+  
+  h2, h3 {
+    margin-bottom: 20px;
+  }
+  
+  .attributes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 20px auto;
+    max-width: 400px;
+  }
+  
+  .attribute {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2em;
+  }
+  
+  .attribute-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #ff4500;
+    border: none;
+    border-radius: 5px;
+    color: #000;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: 'Cinzel', serif;
+  }
+  
+  button:disabled {
+    background-color: #333;
+    color: #666;
+    cursor: not-allowed;
+  }
+  
+  .confirm-button {
+    margin-top: 20px;
+    font-size: 1.5em;
+  }
+  

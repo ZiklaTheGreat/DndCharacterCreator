@@ -11,6 +11,7 @@ import ManageUsersPage from './pages/ManageUsersPage';
 import CreateCharacterPage from './pages/CreateCharacterPage';
 import CharactersListPage from './pages/CharactersListPage';
 import CharacterDetailPage from './pages/CharacterDetailPage';
+import LevelUpPage from './pages/LevelUpPage';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -95,6 +96,7 @@ function App() {
             <Route path="/create-character" element={<CreateCharacterPage />} />
             <Route path="/my-characters" element={<CharactersListPage />} />
             <Route path="/characters/:id" element={<CharacterDetailPage />} />
+            <Route path="/characters/:id/level-up" element={<LevelUpPage />} />
           </Routes>
         </main>
         <Footer />

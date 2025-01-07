@@ -77,6 +77,33 @@ function CreateCharacterPage() {
     }
   };
 
+  const onImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append('image', file);
+  
+    try {
+      const res = await axios.post('http://localhost:5000/api/characters/upload-image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      const { imageUrl } = res.data;
+      setFormData((prev) => ({
+        ...prev,
+        picture: imageUrl, // Uložíme URL obrázka do state
+      }));
+      alert('Obrázok bol úspešne nahraný!');
+    } catch (err) {
+      console.error('Chyba pri nahrávaní obrázka:', err);
+      alert('Nahrávanie obrázka zlyhalo.');
+    }
+  };
+  
+
   const onChange = (e) => {
     const { name, value } = e.target;
 
@@ -134,26 +161,37 @@ function CreateCharacterPage() {
       case 0:
         return (
           <div className="form-section">
-            <label htmlFor="name">Character Name:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={onChange}
-              placeholder="Enter character name"
-              required
-            />
-            <label htmlFor="picture">Picture (URL or path):</label>
-            <input
-              type="text"
-              id="picture"
-              name="picture"
-              value={formData.picture}
-              onChange={onChange}
-              placeholder="Optional"
-            />
-          </div>
+  <label htmlFor="name">Character Name:</label>
+  <input
+    type="text"
+    id="name"
+    name="name"
+    value={formData.name}
+    onChange={onChange}
+    placeholder="Enter character name"
+    required
+  />
+
+  <label htmlFor="picture">Picture URL:</label>
+  <input
+    type="text"
+    id="picture"
+    name="picture"
+    value={formData.picture}
+    onChange={onChange}
+    placeholder="Optional URL"
+  />
+
+  <label htmlFor="upload-image">Upload Picture:</label>
+  <input
+    type="file"
+    id="upload-image"
+    name="image"
+    accept="image/*"
+    onChange={onImageUpload}
+  />
+</div>
+
         );
       case 1:
         return (

@@ -79,22 +79,33 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  text-align: left; /* Zarovná všetok text naľavo */
+  align-items: flex-start; /* Zarovná obsah naľavo */
+  width: 100%; /* Zabezpečí plnú šírku */
 }
 
+
 .attribute {
+  text-align: left;
   display: flex;
   flex-direction: column;
+  align-items: flex-start; /* Zarovná všetky deti naľavo */
+  text-align: left; /* Text vnútri bude zarovnaný naľavo */
   margin-bottom: 20px;
+  width: 100%; /* Zabezpečí, že sekcia zaberá celú šírku */
 }
 
 .attribute-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+  justify-content: space-between; /* Ak sú dve hodnoty, rozdeli ich */
+  align-items: center; /* Zarovná text vertikálne na stred */
+  text-align: left; /* Zarovná text naľavo */
+  width: 100%; /* Zabezpečí plnú šírku */
 }
 
+
 .attribute-header span {
+  text-align: left;
   font-size: 1.5em;
   font-weight: bold;
 }
@@ -108,6 +119,10 @@
 
 .skills {
   margin-left: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .skills p {
@@ -219,4 +234,268 @@
 
 .back-button:hover {
   background-color: #e63900;
+}
+
+.character-detail-page {
+  position: relative;
+  font-family: 'Cinzel', serif;
+  color: #ff4500;
+  min-height: 100vh;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.character-sheet {
+  background-color: #000;
+  border: 2px solid #ff4500;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 1000px;
+  padding: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.character-header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.character-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  border: 2px solid #ff4500;
+}
+
+.character-overview {
+  flex: 1;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 20px;
+}
+
+.character-name {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.character-details p,
+.character-stats p {
+  font-size: 1.3em; /* Rovnaká veľkosť písma */
+  margin: 5px 0;    /* Rovnaké odsadenie */
+  color: #c3c7c5;   /* Rovnaká farba */
+  font-family: 'Cinzel', serif; /* Rovnaký font */
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.character-details,
+.character-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.character-stats {
+  font-size: 1.2em;
+}
+
+.character-attributes {
+  grid-column: 1 / 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left; /* Zarovná všetok text naľavo */
+  align-items: flex-start; /* Zarovná obsah naľavo */
+  width: 100%; /* Zabezpečí plnú šírku */
+}
+
+
+.attribute {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Zarovná všetky deti naľavo */
+  text-align: left; /* Text vnútri bude zarovnaný naľavo */
+  margin-bottom: 20px;
+  width: 100%; /* Zabezpečí, že sekcia zaberá celú šírku */
+}
+
+.attribute-header {
+  display: flex;
+  justify-content: space-between; /* Ak sú dve hodnoty, rozdeli ich */
+  align-items: center; /* Zarovná text vertikálne na stred */
+  text-align: left; /* Zarovná text naľavo */
+  width: 100%; /* Zabezpečí plnú šírku */
+}
+
+
+.attribute-header span {
+  text-align: left;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.attribute-value {
+  width: 60px;
+  font-size: 1.2em;
+  padding: 5px;
+  margin-left: 5%;
+}
+
+.skills {
+  margin-left: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.skills p {
+  font-size: 1.2em;
+  color: #c3c7c5;
+  margin: 5px 0;
+}
+
+.attributes-title {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+  text-decoration: underline;
+}
+
+.character-gear {
+  flex: 1;
+  justify-content: space-between;
+}
+
+.character-equipment {
+  grid-column: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.character-equipment h3 {
+  font-size: 1.8em;
+  text-decoration: underline;
+  margin-bottom: 10px;
+}
+
+.character-equipment label {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.character-equipment select {
+  width: 100%;
+  font-size: 1.2em;
+  padding: 10px;
+  border: 2px solid #ff4500;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.character-equipment p {
+  font-size: 1.2em;
+  margin: 5px 0;
+}
+
+.character-inventory {
+  grid-column: 2 / 3;
+  margin-right: 5%;
+}
+
+.character-inventory h3 {
+  font-size: 1.8em;
+  text-decoration: underline;
+  margin-bottom: 10px;
+}
+
+.inventory-input {
+  width: 100%;
+  height: 200px;
+  font-size: 1.2em;
+  padding: 10px;
+  border: 2px solid #ff4500;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+}
+
+.save-button {
+  margin-top: 20px;
+  padding: 15px 30px;
+  font-size: 1.5em;
+  color: #000;
+  background-color: #ff4500;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+  background-color: #e63900;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  color: #000;
+  background-color: #ff4500;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #e63900;
+}
+
+.level-up-button {
+  margin-top: 20px; /* Rovnako ako save-button */
+  padding: 15px 30px; /* Rovnaké odsadenie */
+  font-size: 1.5em; /* Rovnaká veľkosť textu */
+  color: #000; /* Rovnaká farba textu */
+  background-color: #ff4500; /* Rovnaká farba pozadia */
+  border: none;
+  border-radius: 5px; /* Rovnaké zaoblenie */
+  cursor: pointer;
+  font-family: 'Cinzel', serif; /* Rovnaký font */
+  transition: background-color 0.3s ease;
+  align-self: flex-start; /* Zarovná tlačidlo na ľavú stranu */
+}
+
+.level-up-button:hover {
+  background-color: #e63900; /* Rovnaký efekt pri hover */
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Priestor medzi tlačidlami */
+  margin-top: 20px; /* Odsadenie od obsahu nad nimi */
+  width: 100%; /* Zabezpečí správne správanie na celej šírke */
 }
