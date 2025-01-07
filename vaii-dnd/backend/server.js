@@ -8,10 +8,7 @@ const app = express();
 app.use(express.json());
 
 // Nastavenie CORS
-app.use(cors({
-  origin: '*', // Povolenie všetkých zdrojov
-}));
-
+app.use(cors());
 
 // Routes
 app.use('/api/users', require('./routes/users'));

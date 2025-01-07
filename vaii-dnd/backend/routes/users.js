@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+const Character = require('../models/Character');
 
 // Registrácia užívateľa
 router.post('/register', async (req, res) => {
@@ -85,17 +86,35 @@ router.get('/', async (req, res) => {
     }
   });
   
-  // Vymazanie užívateľa (len pre admina)
-  router.delete('/:id', async (req, res) => {
-    try {
-      const userId = req.params.id;
-      await User.findByIdAndDelete(userId);
-      res.json({ msg: 'Užívateľ úspešne vymazaný' });
-    } catch (err) {
-      console.error('Chyba pri mazaní užívateľa:', err);
-      res.status(500).json({ msg: 'Serverová chyba' });
+// Vymazanie užívateľa (len pre admina)
+router.delete('/:id', async (req, res) => {
+  console.log("Zaciatok");
+  try {
+    const userId = req.params.id;
+    console.log("2");
+
+    // Získanie užívateľa podľa ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: 'Užívateľ neexistuje' });
     }
-  });
+
+    console.log("3");
+
+    // Vymazanie všetkých postáv patriacich užívateľovi
+    await Character.deleteMany({ ownerName: user.username });
+
+    console.log("4");
+
+    // Vymazanie užívateľa
+    await User.findByIdAndDelete(userId);
+
+    res.json({ msg: 'Užívateľ a všetky jeho postavy boli úspešne vymazané' });
+  } catch (err) {
+    console.error('Chyba pri mazaní užívateľa:', err);
+    res.status(500).json({ msg: 'Serverová chyba' });
+  }
+});
 
   router.put('/:id', async (req, res) => {
     const userId = req.params.id;
