@@ -32,7 +32,11 @@ function LoginPage({ handleLogin }) {
       }
     } catch (err) {
       console.error('Chyba pri prihlásení:', err);
-      alert('Chyba pri prihlásení');
+      if (err.response && err.response.data && err.response.data.msg) {
+        alert(`Chyba pri prihlásení: ${err.response.data.msg}`);
+      } else {
+        alert('Chyba pri prihlásení: Niečo sa pokazilo.');
+      }
     }
   };
 

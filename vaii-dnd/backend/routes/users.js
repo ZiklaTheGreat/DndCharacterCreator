@@ -44,8 +44,9 @@ router.post('/register', async (req, res) => {
 
 // Prihlásenie užívateľa
 router.post('/login', async (req, res) => {
+  console.log("Step 1: Route reached");
   const { username, password } = req.body;
-
+  console.log("Step 2: Request body received", { username, password });
   // Overenie, či sú všetky polia vyplnené
   if (!username || !password) {
     return res.status(400).json({ success: false, msg: 'Vyplňte všetky polia' });
@@ -67,6 +68,7 @@ router.post('/login', async (req, res) => {
     // Prihlásenie úspešné
     res.json({ success: true, msg: 'Prihlásenie úspešné' });
   } catch (err) {
+    console.log(err);
     console.error('Chyba pri prihlásení:', err);
     res.status(500).json({ success: false, msg: 'Serverová chyba' });
   }

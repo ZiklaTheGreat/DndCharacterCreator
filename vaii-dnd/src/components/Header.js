@@ -26,6 +26,7 @@ const Header = ({ isAuthenticated, handleLogout, username }) => {
           </ul>
         </nav>
 
+        <div className="user-control">
         {isAuthenticated ? (
           <div className="user-info">
             <span className="welcome-message">User: {username}!</span>
@@ -34,6 +35,9 @@ const Header = ({ isAuthenticated, handleLogout, username }) => {
         ) : (
           <a href="/Login" className="login-link">Login</a>
         )}
+        </div>
+
+        
       </div>
     </header>
   );
