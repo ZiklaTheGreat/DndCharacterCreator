@@ -10,9 +10,7 @@ function CharactersListPage() {
   const username = localStorage.getItem('username');
 
   useEffect(() => {
-    // Presmerovanie na login stránku, ak používateľ nie je prihlásený
     if (!username) {
-      //alert('You must be logged in to access this page.');
       navigate('/Login');
       return;
     }
@@ -28,6 +26,26 @@ function CharactersListPage() {
 
     fetchChars();
   }, [username, navigate]);
+
+  const handleDelete = async (charId) => {
+    const ownerName = localStorage.getItem('username');
+  
+    if (!window.confirm('Are you sure you want to delete this character?')) {
+      return;
+    }
+  
+    try {
+      await axios.delete(`http://localhost:5000/api/characters/${charId}`, {
+        params: { ownerName },
+      });
+      alert('Character deleted successfully!');
+      setCharacters((prev) => prev.filter((char) => char._id !== charId));
+    } catch (err) {
+      console.error('Error deleting character:', err);
+      alert('Failed to delete character.');
+    }
+  };
+  
 
   if (!username) {
     return <div className="characters-list-page">Please log in to view your characters.</div>;
@@ -45,12 +63,20 @@ function CharactersListPage() {
         <ul className="character-list">
           {characters.map((char) => (
             <li key={char._id} className="character-item">
+              <div className='character-info'>
               <Link to={`/characters/${char._id}`} className="character-link">
                 {char.name}
               </Link>
               <span className="character-details">
                 {char.race}, {char.charClass}, Level {char.level}
               </span>
+              </div>
+              <button
+                className="delete-character-button"
+                onClick={() => handleDelete(char._id)}
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ul>

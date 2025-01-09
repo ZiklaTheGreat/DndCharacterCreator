@@ -6,11 +6,15 @@ import "../styles/CreateCharacterPageStyle.css";
 function CreateCharacterPage() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
+  const [classes, setClasses] = useState([]);
+  const [races, setRaces] = useState([]);
+  const [selectedRaceInfo, setSelectedRaceInfo] = useState('');
+  const [selectedClassInfo, setSelectedClassInfo] = useState('');
   const [formData, setFormData] = useState({
     picture: '',
     name: '',
-    race: 'human',
-    charClass: 'fighter',
+    race: '',
+    charClass: '',
     level: 1,
     hitpoints: 10,
     attributes: {
@@ -21,23 +25,116 @@ function CreateCharacterPage() {
       wisdom: 10,
       charisma: 10,
     },
+    attributeLimits: {
+      strength: { min: 0, max: 20 },
+      dexterity: { min: 0, max: 20 },
+      intelligence: { min: 0, max: 20 },
+      constitution: { min: 0, max: 20 },
+      wisdom: { min: 0, max: 20 },
+      charisma: { min: 0, max: 20 },
+    },
     inventory: '',
   });
+  
 
   useEffect(() => {
-    const username = localStorage.getItem('username');
-    if (!username) {
-      //alert('You must be logged in to access this page.');
-      navigate('/Login'); // Presmerovanie na login
+    const fetchClasses = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/classes');
+        setClasses(res.data); // `classes` je nový stav
+      } catch (err) {
+        console.error('Chyba pri načítavaní tried:', err);
+      }
+    };
+  
+    fetchClasses();
+  }, []);
+
+  useEffect(() => {
+    const fetchRaces = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/races');
+        setRaces(res.data);
+      } catch (err) {
+        console.error('Chyba pri načítavaní rás:', err);
+      }
+    };
+  
+    fetchRaces();
+  }, []);
+
+  const handleClassChange = (e) => {
+    const selectedClass = e.target.value;
+    setFormData({ ...formData, charClass: selectedClass });
+
+    const classInfo = classes.find((cls) => cls.name === selectedClass);
+    if (classInfo) {
+      setSelectedClassInfo(
+        `Trieda "${classInfo.name}" dáva proficiency v: ${classInfo.proficiencySkills
+          .map((skill) => `"${skill}"`)
+          .join(' a ')}.`
+      );
+    } else {
+      setSelectedClassInfo('');
     }
-  }, [navigate]);  
+  };
+
+  const applyRaceBonuses = (raceName) => {
+    const selectedRace = races.find((race) => race.name === raceName);
+    if (!selectedRace) return;
+  
+    const previousRace = races.find((race) => race.name === formData.race);
+  
+    const updatedAttributes = { ...formData.attributes };
+    const updatedLimits = { ...formData.attributeLimits };
+  
+    // Odstránenie bonusov predchádzajúcej rasy a aktualizácia limitov
+    if (previousRace) {
+      previousRace.attributes.forEach((attr) => {
+        updatedAttributes[attr] -= 1;
+        updatedLimits[attr].max -= 1;
+        updatedLimits[attr].min -= 1;
+      });
+    }
+  
+    // Pridanie bonusov novej rasy a aktualizácia limitov
+    selectedRace.attributes.forEach((attr) => {
+      updatedAttributes[attr] += 1;
+      updatedLimits[attr].max += 1;
+      updatedLimits[attr].min += 1;
+    });
+  
+    // Uistíme sa, že aktuálne hodnoty sú v povolených hraniciach
+    Object.keys(updatedAttributes).forEach((key) => {
+      if (updatedAttributes[key] > updatedLimits[key].max) {
+        updatedAttributes[key] = updatedLimits[key].max;
+      }
+      if (updatedAttributes[key] < updatedLimits[key].min) {
+        updatedAttributes[key] = updatedLimits[key].min;
+      }
+    });
+  
+    setFormData((prev) => ({
+      ...prev,
+      race: raceName,
+      attributes: updatedAttributes,
+      attributeLimits: updatedLimits,
+    }));
+  
+    setSelectedRaceInfo(
+      `Rasa "${selectedRace.name}" dáva +1 do ${selectedRace.attributes
+        .map((attr) => `"${attr}"`)
+        .join(' a ')}.`
+    );
+  };
+  
 
   const steps = ['Name & Picture', 'Race', 'Class', 'Attributes', 'Inventory'];
 
   const [remainingPoints, setRemainingPoints] = useState(10);
 
   const incrementAttribute = (attrName) => {
-    if (remainingPoints > 0 && formData.attributes[attrName] < 20) {
+    if (remainingPoints > 0 && formData.attributes[attrName] < formData.attributeLimits[attrName].max) {
       setFormData((prev) => ({
         ...prev,
         attributes: {
@@ -50,7 +147,7 @@ function CreateCharacterPage() {
   };
   
   const decrementAttribute = (attrName) => {
-    if (formData.attributes[attrName] > 0) {
+    if (formData.attributes[attrName] > formData.attributeLimits[attrName].min) {
       setFormData((prev) => ({
         ...prev,
         attributes: {
@@ -61,6 +158,7 @@ function CreateCharacterPage() {
       setRemainingPoints((prev) => prev + 1);
     }
   };
+  
   
 
   const handleNext = (e) => {
@@ -126,31 +224,50 @@ function CreateCharacterPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
+  
     const ownerName = localStorage.getItem('username');
-    const body = { ownerName, ...formData };
-
+  
+    // Kontrola: Používateľ musí byť prihlásený
     if (!ownerName || ownerName.trim() === '') {
-      alert('You must be logged in to create a!');
+      alert('You must be logged in to create a character!');
       return;
     }
-    if (!body.name || body.name.trim() === '') {
+  
+    // Kontrola: Meno musí byť zadané
+    if (!formData.name || formData.name.trim() === '') {
       alert('You must enter a character name!');
       return;
     }
+      
+    // Kontrola: Rasa musí byť vybraná
+    if (!formData.race || formData.race.trim() === "") {
+      alert("Please select a race before creating your character!");
+      return;
+    }
+  
+    // Kontrola: Trieda musí byť vybraná
+    if (!formData.charClass || formData.charClass.trim() === "") {
+      alert("Please select a class before creating your character!");
+      return;
+    }
+  
+    // Kontrola: Zvyšné body atribútov
     if (remainingPoints > 0) {
       alert('You must use all attribute points before creating your character!');
       return;
     }
   
     try {
-      const ownerName = localStorage.getItem('username');
-      const body = { ownerName, ...formData };
-      await axios.post('http://localhost:5000/api/characters', body);
+      const body = { ownerName, ...formData }; // Formátovanie údajov pre odoslanie
+      const res = await axios.post('http://localhost:5000/api/characters', body);
+      const newCharacterId = res.data._id;
       alert('Character created!');
+      navigate(`/characters/${newCharacterId}`);
     } catch (err) {
       console.error('Error creating character:', err);
-      alert('Failed to create character');
+  
+      const errorMsg = err.response?.data?.msg || 'Failed to create character';
+      alert(errorMsg);
     }
   };
   
@@ -161,70 +278,78 @@ function CreateCharacterPage() {
       case 0:
         return (
           <div className="form-section">
-  <label htmlFor="name">Character Name:</label>
-  <input
-    type="text"
-    id="name"
-    name="name"
-    value={formData.name}
-    onChange={onChange}
-    placeholder="Enter character name"
-    required
-  />
-
-  <label htmlFor="picture">Picture URL:</label>
-  <input
-    type="text"
-    id="picture"
-    name="picture"
-    value={formData.picture}
-    onChange={onChange}
-    placeholder="Optional URL"
-  />
-
-  <label htmlFor="upload-image">Upload Picture:</label>
-  <input
-    type="file"
-    id="upload-image"
-    name="image"
-    accept="image/*"
-    onChange={onImageUpload}
-  />
-</div>
-
-        );
-      case 1:
-        return (
-          <div className="form-section">
-            <label htmlFor="race">Race:</label>
-            <select
-              id="race"
-              name="race"
-              value={formData.race}
+            <label htmlFor="name">Character Name:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
               onChange={onChange}
-            >
-              <option value="human">Human</option>
-              <option value="dwarf">Dwarf</option>
-              <option value="elf">Elf</option>
-            </select>
-          </div>
-        );
-      case 2:
-        return (
-          <div className="form-section">
-            <label htmlFor="charClass">Class:</label>
-            <select
-              id="charClass"
-              name="charClass"
-              value={formData.charClass}
+              placeholder="Enter character name"
+              required
+            />
+
+            <label htmlFor="picture">Picture URL:</label>
+            <input
+              type="text"
+              id="picture"
+              name="picture"
+              value={formData.picture}
               onChange={onChange}
-            >
-              <option value="fighter">Fighter</option>
-              <option value="rogue">Rogue</option>
-              <option value="wizard">Wizard</option>
-            </select>
+              placeholder="Optional URL"
+            />
+
+            <label htmlFor="upload-image">Upload Picture:</label>
+            <input
+              type="file"
+              id="upload-image"
+              name="image"
+              accept="image/*"
+              onChange={onImageUpload}
+            />
           </div>
+
         );
+        case 1:
+          return (
+            <div className="form-section">
+              <label htmlFor="race">Race:</label>
+              <select
+                id="race"
+                name="race"
+                value={formData.race}
+                onChange={(e) => applyRaceBonuses(e.target.value)}
+              >
+                <option value="">Select a race</option>
+                {races.map((race) => (
+                  <option key={race._id} value={race.name}>
+                    {race.name}
+                  </option>
+                ))}
+              </select>
+              {selectedRaceInfo && <p className="info-text">{selectedRaceInfo}</p>}
+            </div>
+          );
+        case 2:
+          return (
+            <div className="form-section">
+              <label htmlFor="charClass">Class:</label>
+              <select
+                id="charClass"
+                name="charClass"
+                value={formData.charClass}
+                onChange={handleClassChange}
+              >
+                <option value="">Select a class</option>
+                {classes.map((cls) => (
+                  <option key={cls._id} value={cls.name}>
+                    {cls.name}
+                  </option>
+                ))}
+              </select>
+              {selectedClassInfo && <p className="info-text">{selectedClassInfo}</p>}
+            </div>
+          );
         case 3:
           return (
             <div className="form-section">

@@ -39,7 +39,8 @@
 
 .character-item {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   margin-bottom: 20px;
   padding: 15px;
   border: 2px solid #ff4500;
@@ -66,7 +67,33 @@
   color: #fff;
 }
 
+.character-info {
+  display: flex;
+  flex-direction: column;
+}
+.buttons {
+  display: flex;
+}
+
 .character-details {
   font-size: 1.2em;
   color: #ccc;
+}
+
+.delete-character-button {
+  background-color: #ff4500;
+  color: #fff;
+  border: none;
+
+  padding: 5px;
+  margin-left: 10px;
+  border-radius: 5px;
+  width: 15%;
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  transition: background-color 0.3s ease;
+}
+
+.delete-character-button:hover {
+  background-color: #e63900;
 }

@@ -21,7 +21,10 @@ function RegisterPage() {
     try {
       const res = await axios.post('http://localhost:5000/api/users/register', formData);
       alert(res.data.msg);
-      navigate('/Login');
+      localStorage.setItem('isAuthenticated', true);
+      localStorage.setItem('username', username);
+      navigate('/');
+      window.location.reload();
     } catch (err) {
       console.error('Chyba pri registrácii:', err);
   

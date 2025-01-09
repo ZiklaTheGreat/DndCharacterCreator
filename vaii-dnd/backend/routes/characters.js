@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const Character = require('../models/Character');
 const multer = require('multer');
+const fs = require('fs');
 const path = require('path');
 
 // Nastavenie úložiska pre Multer
@@ -117,14 +118,14 @@ router.get('/:id', async (req, res) => {
 // UPDATE (PUT) - Aktualizácia postavy
 router.put('/:id', async (req, res) => {
   try {
-    const ownerName = req.body.ownerName; 
+    const { ownerName, name, picture, race, charClass, level, hitpoints, attributes, inventory, equippedWeapon, equippedArmor } = req.body;
     const charId = req.params.id;
-    const { name, picture, race, charClass, level, hitpoints, attributes, inventory } = req.body;
 
     const character = await Character.findById(charId);
     if (!character) {
       return res.status(404).json({ msg: 'Postava neexistuje.' });
     }
+
     if (character.ownerName !== ownerName) {
       return res.status(403).json({ msg: 'Nemáš právo aktualizovať túto postavu.' });
     }
@@ -138,12 +139,50 @@ router.put('/:id', async (req, res) => {
     if (hitpoints !== undefined) character.hitpoints = hitpoints;
     if (attributes !== undefined) character.attributes = attributes;
     if (inventory !== undefined) character.inventory = inventory;
+    if (equippedWeapon !== undefined) character.equippedWeapon = equippedWeapon;
+    if (equippedArmor !== undefined) character.equippedArmor = equippedArmor;
 
-    const updated = await character.save();
-    return res.json(updated);
+    const updatedCharacter = await character.save();
+    return res.json(updatedCharacter);
   } catch (err) {
     console.error('Chyba pri aktualizácii postavy:', err);
     res.status(500).json({ msg: 'Serverová chyba pri aktualizácii postavy.' });
+  }
+});
+
+// DELETE (DELETE) - Odstránenie postavy
+router.delete('/:id', async (req, res) => {
+  try {
+    const ownerName = req.query.ownerName; // Prihlásený užívateľ
+    const charId = req.params.id;
+
+    const character = await Character.findById(charId);
+    if (!character) {
+      return res.status(404).json({ msg: 'Postava neexistuje.' });
+    }
+
+    // Skontrolujeme, či postava patrí prihlásenému užívateľovi
+    if (character.ownerName !== ownerName) {
+      return res.status(403).json({ msg: 'Nemáš právo odstrániť túto postavu.' });
+    }
+
+    // Vymažeme obrázok postavy, ak je nahraný lokálne
+    if (character.picture && !character.picture.startsWith('http')) {
+      const imagePath = path.join(__dirname, '..', character.picture);
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(`Chyba pri mazaní obrázka: ${imagePath}`, err);
+        }
+      });
+    }
+
+    // Vymažeme postavu
+    await Character.findByIdAndDelete(charId);
+
+    res.json({ msg: 'Postava a jej obrázok boli úspešne vymazané.' });
+  } catch (err) {
+    console.error('Chyba pri odstraňovaní postavy:', err);
+    res.status(500).json({ msg: 'Serverová chyba pri odstraňovaní postavy.' });
   }
 });
 

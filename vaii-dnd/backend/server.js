@@ -16,8 +16,10 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/users', require('./routes/users'));
 const charactersRouter = require('./routes/characters');
 app.use('/api/characters', charactersRouter);
-
-
+const classesRouter = require('./routes/classes');
+app.use('/api/classes', classesRouter);
+const raceRoutes = require('./routes/races');
+app.use('/api/races', raceRoutes);
 
 // Pripojenie k MongoDB
 mongoose.connect('mongodb://localhost:27017/vail-dnd')

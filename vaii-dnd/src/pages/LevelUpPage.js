@@ -16,13 +16,15 @@ function LevelUpPage() {
       try {
         const res = await axios.get(`http://localhost:5000/api/characters/${id}?ownerName=${username}`);
         setCharData(res.data);
-        setOriginalAttributes({ ...res.data.attributes }); // Uložíme pôvodné hodnoty
+        setOriginalAttributes({ ...res.data.attributes }); // Store original attribute values
       } catch (err) {
         console.error('Error fetching character:', err);
       }
     };
     fetchChar();
-  }, [id]);
+  }, [id, username]);
+
+  const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
   const incrementAttribute = (attrName) => {
     if (remainingPoints > 0) {
@@ -40,7 +42,7 @@ function LevelUpPage() {
   const decrementAttribute = (attrName) => {
     if (
       remainingPoints < 2 &&
-      charData.attributes[attrName] > originalAttributes[attrName] // Zabezpečí, že neprekonáme pôvodnú hodnotu
+      charData.attributes[attrName] > originalAttributes[attrName] // Prevent decreasing below original value
     ) {
       setCharData((prev) => ({
         ...prev,
@@ -57,7 +59,8 @@ function LevelUpPage() {
     try {
       const updatedCharData = {
         ...charData,
-        level: charData.level + 1, // Zvýšenie levelu o 1
+        charClass: capitalizeFirstLetter(charData.charClass), // Ensure proper capitalization
+        level: charData.level + 1, // Increase level by 1
       };
       await axios.put(`http://localhost:5000/api/characters/${id}`, updatedCharData);
       alert('Level up successful!');
@@ -84,7 +87,7 @@ function LevelUpPage() {
               <button
                 type="button"
                 onClick={() => decrementAttribute(key)}
-                disabled={value <= originalAttributes[key]} // Tlačidlo zakázané, ak hodnota <= pôvodná
+                disabled={value <= originalAttributes[key]} // Disable if value <= original
               >
                 ↓
               </button>
@@ -92,7 +95,7 @@ function LevelUpPage() {
               <button
                 type="button"
                 onClick={() => incrementAttribute(key)}
-                disabled={remainingPoints <= 0}
+                disabled={remainingPoints <= 0} // Disable if no points left
               >
                 ↑
               </button>
