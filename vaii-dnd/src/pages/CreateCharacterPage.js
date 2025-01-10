@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "../styles/CreateCharacterPageStyle.css";
@@ -271,45 +271,102 @@ function CreateCharacterPage() {
     }
   };
   
-  
+  const fileInputRef = useRef(null);
 
   const renderStepContent = () => {
     switch (currentStep) {
       case 0:
         return (
-          <div className="form-section">
-            <label htmlFor="name">Character Name:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={onChange}
-              placeholder="Enter character name"
-              required
-            />
+<div className="form-section">
+      <label htmlFor="name">Character Name:</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        value={formData.name}
+        onChange={onChange}
+        placeholder="Enter character name"
+        required
+      />
 
-            <label htmlFor="picture">Picture URL:</label>
-            <input
-              type="text"
-              id="picture"
-              name="picture"
-              value={formData.picture}
-              onChange={onChange}
-              placeholder="Optional URL"
-            />
+      <label htmlFor="picture">Picture URL:</label>
+      <input
+        type="text"
+        id="picture"
+        name="picture"
+        value={formData.picture}
+        onChange={onChange}
+        placeholder="Optional URL"
+        disabled={!!formData.uploadedImage} // Zablokuje pole, ak je nahraný obrázok
+        style={{ width: '100%' }} // Rovnaká šírka ako ostatné polia
+      />
 
-            <label htmlFor="upload-image">Upload Picture:</label>
-            <input
-              type="file"
-              id="upload-image"
-              name="image"
-              accept="image/*"
-              onChange={onImageUpload}
-            />
-          </div>
+      <label htmlFor="upload-image">Upload Picture:</label>
+      <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+        <input
+          ref={fileInputRef} // Pripojenie referencie
+          type="file"
+          id="upload-image"
+          name="image"
+          accept="image/*"
+          onChange={async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
 
-        );
+            const uploadFormData = new FormData();
+            uploadFormData.append('image', file);
+
+            try {
+              const res = await axios.post('http://localhost:5000/api/characters/upload-image', uploadFormData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              });
+
+              const { imageUrl } = res.data;
+              setFormData((prev) => ({
+                ...prev,
+                uploadedImage: imageUrl, // Uloží URL nahraného obrázka
+                picture: imageUrl, // Nastaví URL obrázka
+              }));
+              alert('Image uploaded successfully!');
+            } catch (err) {
+              console.error('Error uploading image:', err);
+              alert('Image upload failed.');
+            }
+          }}
+          style={{ width: '100%' }}
+        />
+        {formData.uploadedImage && (
+          <button
+            type="button"
+            onClick={() => {
+              setFormData((prev) => ({
+                ...prev,
+                uploadedImage: null, // Odstráni nahraný obrázok
+                picture: '', // Odomkne pole a vymaže URL
+              }));
+              if (fileInputRef.current) {
+                fileInputRef.current.value = ''; // Resetuje input file
+              }
+            }}
+            style={{
+              position: 'absolute',
+              right: '10px',
+              backgroundColor: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              color: 'red',
+              fontSize: '1.5em',
+            }}
+            title="Remove Uploaded Image"
+          >
+            ✖
+          </button>
+        )}
+      </div>
+    </div>
+  );
         case 1:
           return (
             <div className="form-section">
