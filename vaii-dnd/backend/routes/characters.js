@@ -32,21 +32,6 @@ const fileFilter = (req, file, cb) => {
 // Middleware Multer
 const upload = multer({ storage, fileFilter });
 
-// Endpoint pre nahrávanie obrázkov
-router.post('/upload-image', upload.single('image'), (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ msg: 'Súbor nebol nahraný' });
-    }
-    const imageUrl = `/uploads/${req.file.filename}`;
-    res.json({ msg: 'Obrázok bol úspešne nahraný', imageUrl });
-  } catch (err) {
-    console.error('Chyba pri nahrávaní obrázka:', err);
-    res.status(500).json({ msg: 'Serverová chyba' });
-  }
-});
-
-
 // CREATE (POST) - Vytvorenie novej postavy
 router.post('/', async (req, res) => {
     console.log("Reached POST / in characters.js");
@@ -150,40 +135,47 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DELETE (DELETE) - Odstránenie postavy
-router.delete('/:id', async (req, res) => {
+// Endpoint pre nahrávanie obrázkov
+router.post('/upload-image', upload.single('image'), (req, res) => {
   try {
-    const ownerName = req.query.ownerName; // Prihlásený užívateľ
-    const charId = req.params.id;
-
-    const character = await Character.findById(charId);
-    if (!character) {
-      return res.status(404).json({ msg: 'Postava neexistuje.' });
+    if (!req.file) {
+      return res.status(400).json({ msg: 'Súbor nebol nahraný' });
     }
-
-    // Skontrolujeme, či postava patrí prihlásenému užívateľovi
-    if (character.ownerName !== ownerName) {
-      return res.status(403).json({ msg: 'Nemáš právo odstrániť túto postavu.' });
-    }
-
-    // Vymažeme obrázok postavy, ak je nahraný lokálne
-    if (character.picture && !character.picture.startsWith('http')) {
-      const imagePath = path.join(__dirname, '..', character.picture);
-      fs.unlink(imagePath, (err) => {
-        if (err) {
-          console.error(`Chyba pri mazaní obrázka: ${imagePath}`, err);
-        }
-      });
-    }
-
-    // Vymažeme postavu
-    await Character.findByIdAndDelete(charId);
-
-    res.json({ msg: 'Postava a jej obrázok boli úspešne vymazané.' });
+    const imageUrl = `/uploads/${req.file.filename}`;
+    res.json({ msg: 'Obrázok bol úspešne nahraný', imageUrl });
   } catch (err) {
-    console.error('Chyba pri odstraňovaní postavy:', err);
-    res.status(500).json({ msg: 'Serverová chyba pri odstraňovaní postavy.' });
+    console.error('Chyba pri nahrávaní obrázka:', err);
+    res.status(500).json({ msg: 'Serverová chyba' });
   }
 });
+
+// DELETE (DELETE) - Odstránenie postavy
+router.delete('/delete-image', (req, res) => {
+  console.log('Delete image request received.');
+  const imageUrl = req.query.imageUrl;
+  console.log('Image URL:', imageUrl);
+
+  if (!imageUrl || imageUrl.startsWith('http')) {
+    return res.status(400).json({ msg: 'Neplatný obrázok na mazanie.' });
+  }
+
+  const imagePath = path.join(__dirname, '..', 'uploads', path.basename(imageUrl));
+  console.log('Computed image path:', imagePath);
+
+  fs.unlink(imagePath, (err) => {
+    if (err) {
+      console.error(`Chyba pri mazaní obrázka: ${imagePath}`, err);
+      if (err.code === 'ENOENT') {
+        return res.status(404).json({ msg: 'Obrázok neexistuje.' });
+      }
+      return res.status(500).json({ msg: 'Serverová chyba pri mazaní obrázka.' });
+    }
+
+    console.log('Obrázok bol úspešne vymazaný.');
+    res.json({ msg: 'Obrázok bol úspešne vymazaný.' });
+  });
+});
+
+
 
 module.exports = router;

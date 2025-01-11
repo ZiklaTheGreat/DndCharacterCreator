@@ -19,12 +19,6 @@ const HomePage = () => {
       <div className="card-selection">
         <div className="card">
           <a href="/create-character">
-            <img src={Card2} alt="Random Creation" className="card-image" />
-            <div className="card-text">Random Build</div>
-          </a>
-        </div>
-        <div className="card">
-          <a href="/create-character">
             <img src={Card1} alt="Class Selection" className="card-image" />
             <div className="card-text">Standard Build</div>
           </a>
