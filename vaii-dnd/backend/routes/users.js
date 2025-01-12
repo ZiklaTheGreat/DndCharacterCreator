@@ -125,33 +125,42 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-  router.put('/:id', async (req, res) => {
-    const userId = req.params.id;
-    const { username } = req.body;
-  
-    // Overenie vstupov
-    if (!username || username.trim() === '') {
-      return res.status(400).json({ msg: 'Invalid username' });
+router.put('/:id', async (req, res) => {
+  const userId = req.params.id;
+  const { username } = req.body;
+
+  // Overenie vstupov
+  if (!username || username.trim() === '') {
+    return res.status(400).json({ msg: 'Invalid username' });
+  }
+
+  try {
+    // Skontroluj, či užívateľ s novým menom už neexistuje
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ msg: 'Username already exists' });
     }
-  
-    try {
-      // Skontroluj, či užívateľ s novým menom už neexistuje
-      let existingUser = await User.findOne({ username });
-      if (existingUser) {
-        return res.status(400).json({ msg: 'Username already exists' });
-      }
-  
-      // Nájdeme užívateľa a aktualizujeme jeho meno
-      let user = await User.findByIdAndUpdate(userId, { username: username.trim() }, { new: true });
-      if (!user) {
-        return res.status(404).json({ msg: 'User not found' });
-      }
-  
-      res.json({ msg: 'Username updated successfully' });
-    } catch (err) {
-      console.error('Chyba pri aktualizácii užívateľa:', err);
-      res.status(500).json({ msg: 'Server error' });
+
+    // Nájdeme pôvodného užívateľa
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
     }
-  });
+
+    const oldUsername = user.username;
+
+    // Aktualizujeme meno užívateľa
+    user.username = username.trim();
+    await user.save();
+
+    // Aktualizujeme všetky postavy tohto užívateľa
+    await Character.updateMany({ ownerName: oldUsername }, { ownerName: username.trim() });
+
+    res.json({ msg: 'Username and associated characters updated successfully' });
+  } catch (err) {
+    console.error('Chyba pri aktualizácii užívateľa:', err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
 
 module.exports = router;

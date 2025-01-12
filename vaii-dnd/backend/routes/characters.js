@@ -135,6 +135,44 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// DELETE (DELETE) - Odstránenie postavy
+router.delete('/:id', async (req, res) => {
+  try {
+    const ownerName = req.query.ownerName; // Prihlásený užívateľ
+    const charId = req.params.id;
+
+    // Nájdeme postavu
+    const character = await Character.findById(charId);
+    if (!character) {
+      return res.status(404).json({ msg: 'Postava neexistuje.' });
+    }
+
+    // Overíme, či patrí prihlásenému užívateľovi
+    if (character.ownerName !== ownerName) {
+      return res.status(403).json({ msg: 'Nemáš právo odstrániť túto postavu.' });
+    }
+
+    // Ak má postava obrázok uložený lokálne, vymažeme ho
+    if (character.picture && !character.picture.startsWith('http')) {
+      const imagePath = path.join(__dirname, '..', character.picture);
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(`Chyba pri mazaní obrázka: ${imagePath}`, err);
+        }
+      });
+    }
+
+    // Vymažeme postavu z databázy
+    await Character.findByIdAndDelete(charId);
+
+    res.json({ msg: 'Postava bola úspešne vymazaná.' });
+  } catch (err) {
+    console.error('Chyba pri odstraňovaní postavy:', err);
+    res.status(500).json({ msg: 'Serverová chyba pri odstraňovaní postavy.' });
+  }
+});
+
+
 // Endpoint pre nahrávanie obrázkov
 router.post('/upload-image', upload.single('image'), (req, res) => {
   try {

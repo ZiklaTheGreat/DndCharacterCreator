@@ -46,6 +46,7 @@ function CharactersListPage() {
     }
   };
   
+  
 
   if (!username) {
     return <div className="characters-list-page">Please log in to view your characters.</div>;

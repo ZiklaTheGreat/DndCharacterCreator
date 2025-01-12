@@ -284,7 +284,7 @@ function CreateCharacterPage() {
       case 0:
         return (
           <div className="form-section">
-            <label htmlFor="name">Character Name:</label>
+            <label htmlFor="name">*Character Name:</label>
             <input
               type="text"
               id="name"
@@ -388,7 +388,7 @@ function CreateCharacterPage() {
       case 1:
         return (
           <div className="form-section">
-            <label htmlFor="race">Race:</label>
+            <label htmlFor="race">*Race:</label>
             <select
               id="race"
               name="race"
@@ -408,7 +408,7 @@ function CreateCharacterPage() {
       case 2:
         return (
           <div className="form-section">
-            <label htmlFor="charClass">Class:</label>
+            <label htmlFor="charClass">*Class:</label>
             <select
               id="charClass"
               name="charClass"
