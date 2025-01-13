@@ -1,4 +1,5 @@
 Inštalácia a Spustenie Aplikácie
+
 Predpoklady
 
 Pred inštaláciou aplikácie sa uistite, že máte nainštalované nasledujúce nástroje:
