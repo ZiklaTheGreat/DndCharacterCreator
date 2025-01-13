@@ -1,6 +1,9 @@
 # Inštalácia a Spustenie Aplikácie
 ## Predpoklady
-Pred inštaláciou aplikácie sa uistite, že máte nainštalované nasledujúce nástroje: - **Node.js**: Potrebný na spustenie backendu a buildovanie frontend aplikácie. Verzia 16 alebo novšia. [Stiahnuť Node.js](https://nodejs.org/) - **npm**: Nástroj na správu balíčkov, súčasťou Node.js. - **MongoDB**: Lokálny MongoDB server alebo MongoDB Atlas. [Stiahnuť MongoDB](https://www.mongodb.com/try/download/community) - **Git (voliteľné)**: Na klonovanie projektu. [Stiahnuť Git](https://git-scm.com/)
+Pred inštaláciou aplikácie sa uistite, že máte nainštalované nasledujúce nástroje:
+- **Node.js**: Potrebný na spustenie backendu a buildovanie frontend aplikácie. Verzia 16 alebo novšia. [Stiahnuť Node.js](https://nodejs.org/)
+- **npm**: Nástroj na správu balíčkov, súčasťou Node.js.
+- **MongoDB**: Lokálny MongoDB server alebo MongoDB Atlas. [Stiahnuť MongoDB](https://www.mongodb.com/try/download/community)
 ## Klonovanie Projektu
 Ak je projekt uložený v Git repozitári, postupujte nasledovne: 1. Otvorte terminál a spustite príkaz na klonovanie projektu: ```bash git clone <URL repozitára> ```
 ## Inštalácia Závislostí
