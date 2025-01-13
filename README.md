@@ -20,10 +20,10 @@ Inštalácia Závislostí
 
 Projekt pozostáva z backendu (server) a frontendu (klient). Je potrebné nainštalovať závislosti pre obe časti.
 
-    Pre backend:
+Pre backend:
 
-cd backend
-npm install
+    cd backend
+    npm install
 
 Pre frontend:
 
@@ -51,15 +51,15 @@ Po úspešnom spustení backendu aj frontendu otvorte webový prehliadač a prej
 http://localhost:3000
 Riešenie Problémov
 
-    Backend server sa nespustí:
-        Skontrolujte, či je MongoDB server spustený.
-        Uistite sa, že port 5000 nie je obsadený iným procesom.
+Backend server sa nespustí:
+    Skontrolujte, či je MongoDB server spustený.
+    Uistite sa, že port 5000 nie je obsadený iným procesom.
 
-    Frontend server sa nespustí:
-        Skontrolujte, či je port 3000 dostupný.
-        Ak nie, použite príkaz:
+Frontend server sa nespustí:
+    Skontrolujte, či je port 3000 dostupný.
+    Ak nie, použite príkaz:
 
         PORT=3001 npm start
 
-    Obrázky sa neukladajú alebo nemažú:
-        Skontrolujte, či adresár backend/uploads existuje a server má oprávnenie doň zapisovať.
+Obrázky sa neukladajú alebo nemažú:
+    Skontrolujte, či adresár backend/uploads existuje a server má oprávnenie doň zapisovať.
