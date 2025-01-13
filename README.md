@@ -49,7 +49,8 @@ Prístup k Aplikácii
 
 Po úspešnom spustení backendu aj frontendu otvorte webový prehliadač a prejdite na:
 
-http://localhost:3000
+    http://localhost:3000
+    
 Riešenie Problémov
 
 Backend server sa nespustí:
