@@ -35,10 +35,10 @@ Spustenie Aplikácie
 
 Na spustenie aplikácie použite dva samostatné terminály.
 
-    Backend:
+Backend:
 
-cd backend
-npm run dev
+    cd backend
+    npm run dev
 
 Frontend:
 
